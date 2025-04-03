@@ -1,17 +1,23 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+
+    fixture.detectChanges();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
   it(`should have the 'zenika-ng-website' title`, () => {
@@ -27,5 +33,17 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('h1')?.textContent).toContain(
       'my first component'
     );
+  });
+
+  it('should display the products', () => {
+    // TODO
+  });
+
+  it('should update the total when "addToBasket" class method is called (Class testing)', () => {
+    // TODO
+  });
+
+  it('should update the total when a product emits the "addToBasket" event (DOM testing)', () => {
+    // TODO
   });
 });

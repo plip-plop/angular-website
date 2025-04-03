@@ -8,9 +8,8 @@ describe('ProductComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProductComponent]
-    })
-    .compileComponents();
+      imports: [ProductComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ProductComponent);
     component = fixture.componentInstance;
@@ -19,5 +18,33 @@ describe('ProductComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display the product photo as image url', () => {
+    // TODO
+  });
+
+  it('should display the product description', () => {
+    // TODO
+  });
+
+  it('should display the product title', () => {
+    // TODO
+  });
+
+  it('should display the product price', () => {
+    // TODO
+  });
+
+  it('should emit addToBasket event with the given product when the button is clicked', () => {
+    // TODO
+  });
+
+  it('should display the products', () => {
+    // TODO
+  });
+
+  it('should update the total when "addToBasket" class method is called (Class testing)', () => {
+    // TODO
   });
 });
