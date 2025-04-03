@@ -8,34 +8,17 @@
   </header>
 
   <h2 class="h4">Catalogue</h2>
-
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    @if(hasProductsInStock) { @for (produit of products; track produit.id) {
+    @if(produit.stock > 0) {
     <div class="col">
       <app-product
-        [product]="products[0]"
+        [product]="produit"
         (addToBasket)="ajouterAuPanier($event)"
       />
     </div>
-
-    <div class="col">
-      <app-product
-        [product]="products[1]"
-        (addToBasket)="ajouterAuPanier($event)"
-      />
-    </div>
-
-    <div class="col">
-      <app-product
-        [product]="products[2]"
-        (addToBasket)="ajouterAuPanier($event)"
-      />
-    </div>
-
-    <div class="col">
-      <app-product
-        [product]="products[3]"
-        (addToBasket)="ajouterAuPanier($event)"
-      />
-    </div>
+    } } } @else {
+    <p>Stock vide !</p>
+    }
   </div>
 </main>

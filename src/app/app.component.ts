@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
-import { Product } from '../components/product/product.types';
 import { ProductComponent } from '../components/product/product.component';
+import { Product } from '../components/product/product.types';
 
 @Component({
   selector: 'app-root',
@@ -48,7 +48,12 @@ export class AppComponent {
     },
   ];
 
+  get hasProductsInStock() {
+    return this.products.some(({ stock }) => stock > 0);
+  }
+
   ajouterAuPanier(product: Product) {
+    product.stock--;
     this.total += product.price;
   }
 }
