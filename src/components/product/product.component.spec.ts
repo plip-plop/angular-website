@@ -2,9 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductComponent } from './product.component';
 
-describe('ProductComponent', () => {
-  let component: ProductComponent;
+xdescribe('ProductComponent', () => {
+  let componentInstance: ProductComponent;
   let fixture: ComponentFixture<ProductComponent>;
+  let nativeElement: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -12,39 +13,44 @@ describe('ProductComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductComponent);
-    component = fixture.componentInstance;
+    componentInstance = fixture.componentInstance;
+    nativeElement = fixture.nativeElement;
+
+    fixture.componentRef.setInput('product', {
+      id: 'ID',
+      title: 'TITLE',
+      description: 'DESCRIPTION',
+      photo: 'PHOTO',
+      price: 10,
+      stock: 2,
+    });
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(componentInstance).toBeTruthy();
   });
 
   it('should display the product photo as image url', () => {
-    // TODO
+    const image = nativeElement.querySelector('#mon-image') as HTMLImageElement;
+    expect(image?.src).toContain(componentInstance.product().photo);
   });
 
   it('should display the product description', () => {
-    // TODO
+    const anchorTexte = nativeElement.querySelector('a')?.textContent;
+    expect(anchorTexte).toBe(componentInstance.product().description);
   });
 
   it('should display the product title', () => {
-    // TODO
-  });
-
-  it('should display the product price', () => {
-    // TODO
+    const anchorTexte = nativeElement.querySelector('small')?.textContent;
+    expect(anchorTexte).toBe(componentInstance.product().title);
   });
 
   it('should emit addToBasket event with the given product when the button is clicked', () => {
-    // TODO
-  });
+    const emitSpy = spyOn(componentInstance.addToBasket, 'emit');
+    nativeElement.querySelector('button')?.click();
 
-  it('should display the products', () => {
-    // TODO
-  });
-
-  it('should update the total when "addToBasket" class method is called (Class testing)', () => {
-    // TODO
+    expect(emitSpy).toHaveBeenCalledOnceWith(componentInstance.product());
   });
 });

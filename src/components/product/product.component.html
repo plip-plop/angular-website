@@ -2,7 +2,12 @@
   class="card h-100 text-center"
   [ngClass]="{ 'text-bg-warning': limitedStock }"
 >
-  <img class="card-img-top" src="{{ product().photo }}" alt="Product image" />
+  <img
+    id="mon-image"
+    class="card-img-top"
+    src="{{ product().photo }}"
+    alt="Product image"
+  />
   <div class="card-header">
     <small>{{ product().title }}</small>
   </div>
