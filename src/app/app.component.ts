@@ -52,16 +52,16 @@ export class AppComponent {
     this.products().some(({ stock }) => stock > 0)
   );
 
-  ajouterAuPanier({ id, price }: Product) {
+  ajouterAuPanier(produit: Product) {
     this.products.update((products) =>
       products.map((product) => {
-        if (product.id === id) {
+        if (product.id === produit.id) {
           return { ...product, stock: product.stock - 1 };
         }
         return product;
       })
     );
 
-    this.total.update((total) => total + price);
+    this.total.update((total) => total + produit.price);
   }
 }
