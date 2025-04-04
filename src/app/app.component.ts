@@ -1,7 +1,10 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { ProductComponent } from '../components/product/product.component';
 import { Product } from '../components/product/product.types';
+import { BasketService } from '../services/basket.service';
+import { BasketItem } from '../services/basket.types';
+import { CatalogService } from '../services/catalog.service';
 
 @Component({
   selector: 'app-root',
@@ -10,58 +13,25 @@ import { Product } from '../components/product/product.types';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
+  private catalogService = inject(CatalogService);
+  private basketService = inject(BasketService);
+
   title = 'my first component';
-  total = signal<number>(0);
+  total = this.basketService.total;
 
-  products = signal<Product[]>([
-    {
-      id: 'welsch',
-      title: 'Coding the welsch',
-      description: 'Tee-shirt col rond - Homme',
-      photo: '/assets/coding-the-welsch.jpg',
-      price: 2000,
-      stock: 2,
-    },
-    {
-      id: 'world',
-      title: 'Coding the world',
-      description: 'Tee-shirt col rond - Homme',
-      photo: '/assets/coding-the-world.jpg',
-      price: 18,
-      stock: 1,
-    },
-    {
-      id: 'vador',
-      title: 'Duck Vador',
-      description: 'Tee-shirt col rond - Femme',
-      photo: '/assets/coding-the-stars.jpg',
-      price: 21,
-      stock: 2,
-    },
-    {
-      id: 'snow',
-      title: 'Coding the snow',
-      description: 'Tee-shirt col rond - Femme',
-      photo: '/assets/coding-the-snow.jpg',
-      price: 19,
-      stock: 2,
-    },
-  ]);
+  products = this.catalogService.products;
 
-  hasProductsInStock = computed<boolean>(() =>
-    this.products().some(({ stock }) => stock > 0)
-  );
+  hasProductsInStock = this.catalogService.hasProductsInStock;
 
   ajouterAuPanier(produit: Product) {
-    this.products.update((products) =>
-      products.map((product) => {
-        if (product.id === produit.id) {
-          return { ...product, stock: product.stock - 1 };
-        }
-        return product;
-      })
-    );
+    this.catalogService.decreaseStock(produit.id);
 
-    this.total.update((total) => total + produit.price);
+    const item: BasketItem = {
+      id: produit.id,
+      title: produit.title,
+      price: produit.price,
+    };
+
+    this.basketService.addItem(item);
   }
 }
