@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { MenuComponent } from '../components/menu/menu.component';
 import { ProductComponent } from '../components/product/product.component';
 import { Product } from '../components/product/product.types';
@@ -11,9 +11,9 @@ import { Product } from '../components/product/product.types';
 })
 export class AppComponent {
   title = 'my first component';
-  total = 0;
+  total = signal<number>(0);
 
-  products: Product[] = [
+  products = signal<Product[]>([
     {
       id: 'welsch',
       title: 'Coding the welsch',
@@ -46,14 +46,22 @@ export class AppComponent {
       price: 19,
       stock: 2,
     },
-  ];
+  ]);
 
-  get hasProductsInStock() {
-    return this.products.some(({ stock }) => stock > 0);
-  }
+  hasProductsInStock = computed<boolean>(() =>
+    this.products().some(({ stock }) => stock > 0)
+  );
 
-  ajouterAuPanier(product: Product) {
-    product.stock--;
-    this.total += product.price;
+  ajouterAuPanier({ id, price }: Product) {
+    this.products.update((products) =>
+      products.map((product) => {
+        if (product.id === id) {
+          return { ...product, stock: product.stock - 1 };
+        }
+        return product;
+      })
+    );
+
+    this.total.update((total) => total + price);
   }
 }
